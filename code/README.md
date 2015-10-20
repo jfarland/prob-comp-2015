@@ -1,3 +1,3 @@
-# comp-2015 CODE folder
+#probabilistic load forecasting competition CODE folder
 
 
