@@ -134,7 +134,7 @@ model_dat <-
   load_weather %>%
   mutate(temp2 = temp*temp,
          temp3 = temp*temp*temp)  
-
+http://104.236.137.228:8787/rstudio/clear.cache.gif
 #summary(model_dat)
 #tail(model_dat,100)
 
@@ -150,6 +150,8 @@ train <- filter(model_dat, year < 2009) %>%
   filter(!is.na(lag168))
 
 test  <- filter(model_dat, year >= 2009)
+
+
 
 #-----------------------------------------------------------------------------#
 #
@@ -211,43 +213,46 @@ summary(train_f1)
 
 
 ### [2] Linear Regression Models ###
+# 
+# lmFit = list()
+# fcst2 = list()
+# 
+# for(i in 1:length(hours)){x              <- model.matrix(load ~ temp + temp2 + temp3 + factor(dow) + factor(mindx) + holiday + lag24 + lag48 + lag72 + lag96 + lag120 + lag144 + lag168, data=subset(train, hindx==hours[i]))
+#                           lmFit[[i]]     <- lm(load ~ temp + temp2 + temp3 + factor(dow) + factor(mindx) + holiday + lag24 + lag48 + lag72 + lag96 + lag120 + lag144 + lag168, data = subset(train, hindx==hours[i]))
+#                           fcst2[[i]]     <- x %*% lmFit[[i]]$coef
+#                           }
+# 
+# timestamp <- arrange(train_f1, hindx)
+# lmFcst    <- unlist(fcst2)
+# 
+# train_f2  <- cbind(timestamp,lmFcst) %>%
+#   mutate(f2_error = load-lmFcst,
+#          f2_ape   = abs(f1_error/load))
+# 
+# lmFits <-
+#   train %>%
+#   group_by(hindx) %>%
+#   do(model1 = lm(load~ temp + temp2 + temp3 + dow + mindx + holiday + lag24+lag48+lag72+lag96+lag120+lag144+lag168, data = ., keepData = TRUE))
+# 
+# 
+# 
+# #TO DO: fix with presence of factors in design matrix
+# params <- lapply(lmFits$model, coef)
+# 
+# fcts <-
+#   Map(function(x, p) { cbind(1, x$model %>% select(-load) %>% as.matrix()) %*% p},
+#       lmFits$model1,
+#       params)
+# 
 
-lmFit = list()
-fcst2 = list()
-
-for(i in 1:length(hours)){x              <- model.matrix(load ~ temp + temp2 + temp3 + factor(dow) + factor(mindx) + holiday + lag24 + lag48 + lag72 + lag96 + lag120 + lag144 + lag168, data=subset(train, hindx==hours[i]))
-                          lmFit[[i]]     <- lm(load ~ temp + temp2 + temp3 + factor(dow) + factor(mindx) + holiday + lag24 + lag48 + lag72 + lag96 + lag120 + lag144 + lag168, data = subset(train, hindx==hours[i]))
-                          fcst2[[i]]     <- x %*% lmFit[[i]]$coef
-                          }
-
-timestamp <- arrange(train_f1, hindx)
-lmFcst    <- unlist(fcst2)
-
-train_f2  <- cbind(timestamp,lmFcst) %>%
-  mutate(f2_error = load-lmFcst,
-         f2_ape   = abs(f1_error/load))
-
-lmFits <-
-  train %>%
-  group_by(hindx) %>%
-  do(model1 = lm(load~ temp + temp2 + temp3 + dow + mindx + holiday + lag24+lag48+lag72+lag96+lag120+lag144+lag168, data = ., keepData = TRUE))
 
 
 
-#TO DO: fix with presence of factors in design matrix
-params <- lapply(lmFits$model, coef)
+lmFit.Lag <- lm(load~ temp + temp2 + temp3 + dow + dow*temp + dow*temp2 + dow*temp3 +
+                    mindx + mindx*temp2 * mindx*temp3 +
+                    factor(hindx) * temp + holiday +
+                    lag24+lag48+lag72+lag96+lag120+lag144+lag168, data=model_dat)
 
-fcts <-
-  Map(function(x, p) { cbind(1, x$model %>% select(-load) %>% as.matrix()) %*% p},
-      lmFits$model1,
-      params)
-
-
-
-lmFit <- lm(load~ temp + temp2 + temp3 + dow + dow*temp + dow*temp2 + dow*temp3 +
-                  mindx + mindx*temp2 * mindx*temp3 +
-                  factor(hindx) * temp + holiday +
-                  lag24+lag48+lag72+lag96+lag120+lag144+lag168, data=train)
 
 
 
