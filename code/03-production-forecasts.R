@@ -260,6 +260,10 @@ fcst <- predict.rq(rq1, newdata=final_fcst)
 #
 #-----------------------------------------------------------------------------#
 
+setwd("/home/rstudio/projects/prob-comp-2015/data/rawdat")
+
+round1_actuals <- read.csv("Release_2.csv")
+
 ggplot(final_train,aes(x=tindx,y=load))
 
 
