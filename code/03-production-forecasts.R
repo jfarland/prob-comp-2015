@@ -262,7 +262,19 @@ fcst <- predict.rq(rq1, newdata=final_fcst)
 
 setwd("/home/rstudio/projects/prob-comp-2015/data/rawdat")
 
-round1_actuals <- read.csv("Release_2.csv")
+round1_actuals <- read.csv("Release_2.csv") %>%
+  rename(act_load = load,
+         act_temp = T) %>%
+  select(act_load, act_temp)
+
+forecast_act <- cbind(forecasts, round1_actuals)
+
+load_forecasts <- 
+  final_fcst %>%
+  select(spFcst, lmFcst, meanFcst) %>%
+  cbind(forecast_act) %>%
+  rename(fcst_load = load, fcst_temp = temp)
+
 
 ggplot(final_train,aes(x=tindx,y=load))
 
@@ -275,5 +287,6 @@ ggplot(final_train,aes(x=tindx,y=load))
 
 #export data to csv
 write.table(fcst, "/home/rstudio/projects/prob-comp-2015/results/forecasts_week1.csv", sep=",")
+write.table(load_forecasts, "/home/rstudio/projects/prob-comp-2015/data/evaluation_week1.csv", sep=",")
 
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-#

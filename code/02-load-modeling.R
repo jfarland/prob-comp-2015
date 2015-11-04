@@ -134,9 +134,12 @@ model_dat <-
   load_weather %>%
   mutate(temp2 = temp*temp,
          temp3 = temp*temp*temp)  
-http://104.236.137.228:8787/rstudio/clear.cache.gif
+
 #summary(model_dat)
 #tail(model_dat,100)
+
+setwd("/home/rstudio/projects/prob-comp-2015/data")
+save(model_dat,file="model_dat.Rda")
 
 
 
@@ -146,10 +149,10 @@ http://104.236.137.228:8787/rstudio/clear.cache.gif
 #
 #-----------------------------------------------------------------------------#
 
-train <- filter(model_dat, year < 2009) %>%
+train <- filter(model_dat, year < 2010) %>%
   filter(!is.na(lag168))
 
-test  <- filter(model_dat, year >= 2009)
+test  <- filter(model_dat, year >= 2010)
 
 
 
