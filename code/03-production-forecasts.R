@@ -238,10 +238,10 @@ forecast_f3 <-
 
 #Quantile Regression
 
-final_train <- subset(forecast_f3, year < 2010)
+final_train <- subset(forecast_f3, year < 2011)
 
 #SORT THE DATA SET!
-final_fcst <- subset(forecast_f3, year >= 2010) %>%
+final_fcst <- subset(forecast_f3, year >= 2011) %>%
   arrange(tindx) %>%
   select(-load) 
 
