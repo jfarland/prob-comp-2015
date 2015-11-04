@@ -286,7 +286,7 @@ ggplot(final_train,aes(x=tindx,y=load))
 #-----------------------------------------------------------------------------#
 
 #export data to csv
-write.table(fcst, "/home/rstudio/projects/prob-comp-2015/results/forecasts_week1.csv", sep=",")
-write.table(load_forecasts, "/home/rstudio/projects/prob-comp-2015/data/evaluation_week1.csv", sep=",")
+write.table(fcst, "/home/rstudio/projects/prob-comp-2015/results/forecasts_week2.csv", sep=",")
+write.table(load_forecasts, "/home/rstudio/projects/prob-comp-2015/data/evaluation_week2.csv", sep=",")
 
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-#
