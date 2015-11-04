@@ -200,9 +200,10 @@ summary(forecast_f1)
 ### [2] Naive Forecast - Straight Average ###
 
 lmFit <- lm(load~ temp + temp2 + temp3 + dow + dow*temp + dow*temp2 + dow*temp3 +
-                  mindx + mindx*temp2 * mindx*temp3 +
-                  factor(hindx) * temp + holiday +
-                  lag24+lag48+lag72+lag96+lag120+lag144+lag168, data=train)
+                  factor(mindx) + factor(mindx)*temp2 + factor(mindx)*temp3 +
+                  factor(hindx) +
+                  holiday +
+                  lag24+lag48+lag72+lag96+lag120+lag144+lag168 , data=train)
 
 
 forecast_f1$lmFcst <- predict(lmFit, newdata=forecast_final)
@@ -211,6 +212,8 @@ forecast_f2 <-
   forecast_f1 %>%
   mutate(f2_error = load-lmFcst,
          f2_ape   = abs(f2_error/load))
+
+summary(forecast_f2)
 
 ### [4] Naive Forecast - Load Shapes ###
 
