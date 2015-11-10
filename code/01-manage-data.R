@@ -67,6 +67,10 @@ load0 <- read.csv("Release_1.csv")
 
 load1 <- read.csv("Release_2.csv")
 
+load2 <- read.csv("Release_3.csv")
+
+
+
 names(load0)
 sapply(load0,class)
 
@@ -82,7 +86,7 @@ plot(load0$Hour,load0$load)
 #load.data=rbind(load11, load12, load13, load14, load15)
 
 #go from wide to long
-load.long <- rbind(load0, load1) %>%
+load.long <- rbind(load0, load1, load2) %>%
   mutate(tindx = mdy_h(paste(Date, Hour))-duration(1,"hours"),
          mindx = month(tindx),
          dow   = weekdays(tindx),

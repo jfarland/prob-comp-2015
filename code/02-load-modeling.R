@@ -50,6 +50,7 @@ load_weather <-
   arrange(tindx) %>%
   filter(!is.na(load))
 
+summary(load_weather)
 
 #-----------------------------------------------------------------------------#
 #
