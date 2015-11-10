@@ -270,7 +270,12 @@ round1_actuals <- read.csv("Release_2.csv") %>%
          act_temp = T) %>%
   select(act_load, act_temp)
 
-forecast_act <- cbind(forecasts, round1_actuals)
+round2_actuals <- read.csv("Release_3.csv") %>%
+  rename(act_load = load,
+         act_temp = T) %>%
+  select(act_load, act_temp)
+
+forecast_act <- cbind(forecasts, round2_actuals)
 
 load_forecasts <- 
   final_fcst %>%
@@ -278,8 +283,9 @@ load_forecasts <-
   cbind(forecast_act) %>%
   rename(fcst_load = load, fcst_temp = temp)
 
+plot(final_fcst$tindx, final_fcst$load)
 
-ggplot(final_train,aes(x=tindx,y=load))
+ggplot(final_fcst,aes(x=tindx,y=load))
 
 
 #-----------------------------------------------------------------------------#
@@ -289,7 +295,7 @@ ggplot(final_train,aes(x=tindx,y=load))
 #-----------------------------------------------------------------------------#
 
 #export data to csv
-write.table(fcst, "/home/rstudio/projects/prob-comp-2015/results/forecasts_week2.csv", sep=",")
-write.table(load_forecasts, "/home/rstudio/projects/prob-comp-2015/data/evaluation_week2.csv", sep=",")
+write.table(fcst, "/home/rstudio/projects/prob-comp-2015/results/forecasts_week3.csv", sep=",")
+write.table(load_forecasts, "/home/rstudio/projects/prob-comp-2015/data/evaluation_week3.csv", sep=",")
 
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-#
