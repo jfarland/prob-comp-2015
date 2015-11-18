@@ -63,19 +63,21 @@ setwd("/home/rstudio/projects/prob-comp-2015/data/rawdat")
 #system('python /home/rstudio/projects/comp-2015/data/rawdat/00-pull-2015-load-data.py')
 
 
-load0 <- read.csv("Release_1.csv") 
+load1 <- read.csv("Release_1.csv") 
 
-load1 <- read.csv("Release_2.csv")
+load2 <- read.csv("Release_2.csv")
 
-load2 <- read.csv("Release_3.csv")
+load3 <- read.csv("Release_3.csv")
+
+load4 <- read.csv("Release_4.csv")
 
 
 
-names(load0)
-sapply(load0,class)
+names(load1)
+sapply(load1,class)
 
-plot(load0$T,load0$load)
-plot(load0$Hour,load0$load)
+plot(load1$T,load0$load)
+plot(load1$Hour,load0$load)
 
 #-----------------------------------------------------------------------------#
 #
@@ -86,7 +88,7 @@ plot(load0$Hour,load0$load)
 #load.data=rbind(load11, load12, load13, load14, load15)
 
 #go from wide to long
-load.long <- rbind(load0, load1, load2) %>%
+load.long <- rbind(load1, load2, load3, load4) %>%
   mutate(tindx = mdy_h(paste(Date, Hour))-duration(1,"hours"),
          mindx = month(tindx),
          dow   = weekdays(tindx),
