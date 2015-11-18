@@ -52,7 +52,7 @@ load("mean_weather.Rda")
 
 #estimate benchmark model to get some forecast of load in 2010
 lmFit.NoLag <- lm(load~ temp + temp2 + temp3 + dow + dow*temp + dow*temp2 + dow*temp3 +
-                    mindx + mindx*temp2 * mindx*temp3 +
+                    factor(mindx) + factor(mindx)*temp2 * factor(mindx)*temp3 +
                     factor(hindx) * temp + holiday, data=model_dat)
 
 #-----------------------------------------------------------------------------#
@@ -158,14 +158,14 @@ for (i in 1 : length(displacements))
   colnames(forecast_final)[c(i+cols)] = lagnames[i]
 }
 
-forecast_final$forecast <- ifelse(forecast_final$year > 2010, 1, 0)
+forecast_final$forecast <- ifelse(forecast_final$year > 2013, 1, 0)
 
 forecast_final <- filter(forecast_final, !is.na(lag168))
 
-train     <- filter(forecast_final, year < 2010) %>%
+train     <- filter(forecast_final, year < 2013) %>%
   filter(!is.na(lag168))
 
-forecasts <- filter(forecast_final, year >= 2010) 
+forecasts <- filter(forecast_final, year >= 2013) 
 
 
 #-----------------------------------------------------------------------------#
@@ -241,14 +241,14 @@ forecast_f3 <-
 
 #Quantile Regression
 
-final_train <- subset(forecast_f3, year < 2011)
+final_train <- subset(forecast_f3, year < 2013)
 
 #SORT THE DATA SET!
-final_fcst <- subset(forecast_f3, year >= 2011) %>%
+final_fcst <- subset(forecast_f3, year >= 2013) %>%
   arrange(tindx) %>%
   select(-load) 
 
-rq1 = rq(load ~ spFcst + lmFcst + meanFcst, tau=seq(0.01, 0.99, 0.01), final_train)
+rq1 = rq(load ~ spFcst + meanFcst, tau=seq(0.01, 0.99, 0.01), final_train)
 
 postscript("quintiles.pdf", horizontal = FALSE, width = 6.5, height = 3.5)
 plot(rq1, nrow=1, ncol=2)
@@ -275,11 +275,16 @@ round2_actuals <- read.csv("Release_3.csv") %>%
          act_temp = T) %>%
   select(act_load, act_temp)
 
-forecast_act <- cbind(forecasts, round2_actuals)
+round3_actuals <- read.csv("Release_4.csv") %>%
+  rename(act_load = load,
+         act_temp = T) %>%
+  select(act_load, act_temp)
+
+forecast_act <- cbind(forecasts, round3_actuals)
 
 load_forecasts <- 
   final_fcst %>%
-  select(spFcst, lmFcst, meanFcst) %>%
+  select(spFcst,  meanFcst) %>%
   cbind(forecast_act) %>%
   rename(fcst_load = load, fcst_temp = temp)
 
