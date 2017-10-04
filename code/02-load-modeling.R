@@ -87,7 +87,7 @@ lagnames <- paste("lag", displacements, sep = "")
 cols <- dim(load_weather)[2] #number of columns before we add lags
 
 for (i in 1 : length(displacements))
-{
+{swe
   disp = displacements[i]
   load_weather[,i+cols] <- unlist(shift(load_weather$load, -1*disp))
   colnames(load_weather)[c(i+cols)] = lagnames[i]
